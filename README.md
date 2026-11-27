@@ -1,5 +1,5 @@
 # ambient-bridge
-**A privacy-preserving ("Local-First"), zero-config bridge between local AI documentation pipelines (such as [`local-ambient-scribe`](https://github.com)) and closed, browser-based Electronic Health Records (EHRs) without open write APIs (e.g., Lemniscus).**
+**A privacy-preserving ("Local-First"), zero-config bridge between local AI documentation pipelines (such as [`local-ambient-scribe`](https://github.com/tobikuehl/local-ambient-scribe)) and closed, browser-based Electronic Health Records (EHRs) without open write APIs (e.g., Lemniscus).**
 
 ---
 
