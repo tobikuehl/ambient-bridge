@@ -1,0 +1,5 @@
+# Reachable via mDNS (ambient-bridge.local) or localhost
+ambient-bridge.local, localhost {
+    tls internal
+    reverse_proxy bridge-api:8000
+}

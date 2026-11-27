@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/manifest.json" />
+  <title>Ambient Bridge</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 1rem; }
+    .container { max-width: 720px; margin: 0 auto; }
+    .card { background: #1e293b; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border: 1px solid #334155; }
+    .meta { font-size: 0.85rem; color: #94a3b8; display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    textarea { width: 100%; min-height: 140px; background: #0f172a; color: #f8fafc; border: 1px solid #475569; border-radius: 8px; padding: 0.75rem; font-family: inherit; font-size: 1rem; box-sizing: border-box; }
+    button { margin-top: 0.75rem; width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 600; border: none; border-radius: 8px; background: #38bdf8; color: #0f172a; cursor: pointer; }
+    button.done { background: #22c55e; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Local AI → Web EHR Documentation</h2>
+    <div id="list"></div>
+  </div>
+  <script>
+    async function loadDrafts() {
+      const res = await fetch('/api/drafts');
+      const drafts = await res.json();
+      const list = document.getElementById('list');
+      list.innerHTML = '';
+      drafts.forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="meta"><span>${d.title} (${d.source})</span><span>${d.created_at}</span></div>
+          <textarea id="txt-${d.id}">${d.content}</textarea>
+          <button id="btn-${d.id}" class="${d.transferred ? 'done' : ''}" onclick="copyDraft('${d.id}')">
+            ${d.transferred ? '✓ Copied – Paste into Web EHR' : 'Review & Copy for Web EHR'}
+          </button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    async function copyDraft(id) {
+      const text = document.getElementById(`txt-${id}`).value;
+      await navigator.clipboard.writeText(text);
+      await fetch(`/api/drafts/${id}/transferred`, { method: 'POST' });
+      const btn = document.getElementById(`btn-${id}`);
+      btn.textContent = '✓ Copied to Clipboard – Paste into Web EHR now';
+      btn.classList.add('done');
+    }
+
+    loadDrafts();
+  </script>
+</body>
+</html>
