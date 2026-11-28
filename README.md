@@ -60,7 +60,7 @@ Small practices, therapists, and social care providers face a structural interop
 Prerequisites: Docker and Docker Compose on the local host.
 
 ```bash
-git clone https://github.com
+git clone https://github.com/tobikuehl/ambient-bridge.git
 cd ambient-bridge
 docker compose up --build
 ```
